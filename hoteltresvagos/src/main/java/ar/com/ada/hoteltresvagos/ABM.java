@@ -1,6 +1,8 @@
 package ar.com.ada.hoteltresvagos;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -97,8 +99,45 @@ public class ABM {
 
         if (domAlternativo != null)
             huesped.setDomicilioAlternativo(domAlternativo);
-
         
+        //vamos a generar una reserva en el alta misma.
+        Reserva reserva = new Reserva(); //creamos objeto reserva
+        //declarar un importe bigdecimal antes de setear
+
+        BigDecimal importeReserva = new BigDecimal(1000);
+        reserva.setImporteReserva(importeReserva); //forma 1
+
+        reserva.setImporteTotal(new BigDecimal(3000)); //forma 2
+
+        reserva.setImportePagado(new BigDecimal(0)); //hay que instanciar igual el objeto
+
+        reserva.setFechaReserva(new Date()); //fecha actual
+       
+        System.out.println("Ingrese la fecha de ingreso (dd/mm/yy)");
+        
+        Date fechaIngreso = null; //primero declaramos la variable fecha
+        Date fechaEgreso = null;
+
+        DateFormat dFormat = new SimpleDateFormat("dd/MM/yy");  //luego el formato de la fecha
+
+        //Alternativa de leer fecha con try catch
+        try {
+        fechaIngreso = dFormat.parse(Teclado.nextLine()); //parsear lo que lea por teclado al formato "dd/mm/yy", verifica caracter por caracter
+       
+        }catch(Exception ex) {
+            System.out.println("Ingreso una fecha invalida");
+            System.out.println("Vuelva a empezar");
+            return;
+        }
+    //alternativa de leer fecha a los golpes (puede tirar una exepcion)
+    System.out.println("Ingrese la fecha de egreso (dd/mm/yy)");
+    fechaEgreso = dFormat.parse(Teclado.nextLine());
+
+        reserva.setFechaIngreso(fechaIngreso); //pone la fecha del dia
+        reserva.setFechaEgreso(fechaEgreso); //por ahora un dia
+        reserva.setEstadoId(10); //en mi caso esta pagado
+        reserva.setHuesped(huesped); //recien ahora estamos haciendo la relacion bidireccional
+       
         ABMHuesped.create(huesped);
 
         /*
