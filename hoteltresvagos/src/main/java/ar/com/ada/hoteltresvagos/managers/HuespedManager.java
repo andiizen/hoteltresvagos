@@ -109,6 +109,7 @@ public class HuespedManager {
         return todos;
 
     }
+    
 
     /**
      * Busca una lista de huespedes por el nombre completo Esta armado para que se

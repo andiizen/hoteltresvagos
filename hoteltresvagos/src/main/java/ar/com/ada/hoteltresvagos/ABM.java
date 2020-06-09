@@ -18,12 +18,14 @@ public class ABM {
     public static Scanner Teclado = new Scanner(System.in);
 
     protected HuespedManager ABMHuesped = new HuespedManager();
+    protected ReservaManager ABMReserva = new ReservaManager();
 
     public void iniciar() throws Exception {
 
         try {
 
             ABMHuesped.setup();
+            ABMReserva.setup();
 
             printOpciones();
 
@@ -55,9 +57,20 @@ public class ABM {
                         break;
 
                     case 5:
+                        listarReserva();
+                        break;
+                    
+                    case 6:
                         listarPorNombre();
                         break;
 
+                    case 7:
+                        listarPorNombreR();
+                        break;
+                    
+                    case 8: 
+                        mostrarImportesEstRes();
+                
                     default:
                         System.out.println("La opcion no es correcta.");
                         break;
@@ -261,6 +274,13 @@ public class ABM {
         }
     }
 
+    public void listarReserva() {
+        List<Reserva> todas = ABMReserva.buscarTodasReservas();
+        for (Reserva r : todas) {
+            mostrarReserva(r);
+        }
+    }
+
     public void listarPorNombre() {
 
         System.out.println("Ingrese el nombre:");
@@ -270,28 +290,52 @@ public class ABM {
         for (Huesped huesped : huespedes) {
             mostrarHuesped(huesped);
         }
+    
+    }
+
+    public void listarPorNombreR() {
+        System.out.println("Ingrese el nombre:");
+        String nombre = Teclado.nextLine();
+
+        List<Reserva> reservas = ABMReserva.buscarPorNombreHuesped(nombre);
+        for (Reserva reserva : reservas) {
+            mostrarReserva(reserva);
+        }
+    
+    }
+    public void mostrarImportesEstRes() {
+        List<Reserva> reservas = ABMReserva.informeEstadoR();
     }
 
     public void mostrarHuesped(Huesped huesped) {
 
-        System.out.print("Id: " + huesped.getHuespedId() + " Nombre: " + huesped.getNombre()
-        + " DNI: " + huesped.getDni()
-        + " Domicilio: " + huesped.getDomicilio());
+        System.out.print("Id: " + huesped.getHuespedId() +"\nNombre: " + huesped.getNombre()
+        + "\nDNI: " + huesped.getDni()
+        + "\nDomicilio: " + huesped.getDomicilio());
 
         if (huesped.getDomicilioAlternativo() != null)
-            System.out.println(" Alternativo: " + huesped.getDomicilioAlternativo());
+            System.out.println("\nAlternativo: " + huesped.getDomicilioAlternativo());
         else
             System.out.println();
     }
 
+    public void mostrarReserva(Reserva reserva) {
+        System.out.println("IdReserva: " + reserva.getReservaId() + "\nHuesped: " + reserva.getHuesped().getNombre()+
+        "\nFecha de ingreso: " + reserva.getFechaIngreso() + "\nFecha de egreso: " + reserva.getFechaEgreso());
+
+
+    }
     public static void printOpciones() {
         System.out.println("=======================================");
         System.out.println("");
         System.out.println("1. Para agregar un huesped.");
         System.out.println("2. Para eliminar un huesped.");
         System.out.println("3. Para modificar un huesped.");
-        System.out.println("4. Para ver el listado.");
-        System.out.println("5. Buscar un huesped por nombre especifico(SQL Injection)).");
+        System.out.println("4. Para ver el listado de huespedes.");
+        System.out.println("5. Para ver el listado de reservas.");
+        System.out.println("6. Buscar un huesped por nombre especifico(SQL Injection)).");
+        System.out.println("7. Buscar una reserva por nombre especifico.");
+        System.out.println("8. Mostrar importes de reservas con sus estados");
         System.out.println("0. Para terminar.");
         System.out.println("");
         System.out.println("=======================================");

@@ -25,6 +25,8 @@ public class Huesped {
 
     @OneToMany(mappedBy = "huesped", cascade = CascadeType.ALL)
     private List<Reserva> reservas = new ArrayList<>();
+    
+   
 
     public Huesped(String nombre) {
         this.nombre = nombre;
